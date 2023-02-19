@@ -10,6 +10,14 @@ class Game
   end
 
   def start_game
+    ask_user_to_start_game
+    load_new_game_board
+    @game_board.play_round until @game_board.solved?
+    @game_board.render_board(@game_board.board)
+    winning_message if @game_board.solved?
+  end
+
+  def ask_user_to_start_game
     print "\nLet's play Sudoku!\n\n"
     print 'Are you ready? (Y/N): '
     user_input_start_game = gets.chomp
@@ -20,6 +28,19 @@ class Game
     else
       abort("Mission abort!!!!!!, BYE \n")
     end
+  end
+
+  def valid_start_game_input?(input)
+    input.upcase == 'Y'
+  end
+
+  # load board
+  def load_new_game_board
+    @game_board.create_board
+  end
+
+  def winning_message
+    print "\n\n*Congratulations!!!\nYou've won the game!\n"
   end
 end
 
