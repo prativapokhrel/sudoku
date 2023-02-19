@@ -35,16 +35,21 @@ class Board
   end
 
   def fill_box(row, col)
+    num = 0
     3.times do |i|
       3.times do |j|
         loop do
           num = [*1..9].sample
           break if unused_in_box(row, col, num)
         end
-        @board[row + i][col + j].value = num
-        @board[row + i][col + j].playable = false
+        update_board_value(row + i, col + j, num, false)
       end
     end
+  end
+
+  def update_board_value(row, col, num, playable)
+    @board[row][col].value = num
+    @board[row][col].playable = playable
   end
 
   def fill_remaining(row = 0, col = 3)
@@ -52,7 +57,7 @@ class Board
     return true if row == 8 && col == 9
 
     # if it is the end of the current row, move to the next row
-    if row == 9
+    if col == 9
       row += 1
       col = 0
     end
@@ -60,7 +65,8 @@ class Board
     return fill_remaining(row, col + 1) if @board[row][col].value != 0
 
     # fill cells
-    fill_cells(row, col)
+    return true if fill_cells(row, col)
+
     false
   end
 
@@ -75,6 +81,7 @@ class Board
 
       @board[row][col].value = 0
     end
+    false
   end
 
   # remove numbers for playing purpose
@@ -118,6 +125,23 @@ class Board
       end
     end
     true
+  end
+
+  def render_board(board)
+    print "\n   0  1  2   3  4  5   6  7  8 \n"
+    board.each_with_index do |line, i|
+      print "#{i} "
+      line.each_with_index do |_char, j|
+        [2, 5].include?(j) ? (print "#{board[i][j].colorize} ") : (print board[i][j].colorize)
+      end
+      print "\n"
+      print "\n" if [2, 5].include? i
+    end
+  end
+
+  def play_round
+    render_board(@board)
+    update_board(ask_user_input)
   end
 
   # GET USER INPUT

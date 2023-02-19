@@ -15,11 +15,11 @@ class Tile
 
   def colorize
     if @playable && @safe_move
-      " #{@value} ".colorize(color: black, background: light_cyan)
+      " #{@value} ".colorize(color: :black, background: :light_magenta)
     elsif !@safe_move
-      " #{@value} ".colorize(color: white, background: red)
+      " #{@value} ".colorize(color: :white, background: :red)
     else
-      " #{@value} ".colorize(color: black, background: white)
+      " #{@value} ".colorize(color: :black, background: :white)
     end
   end
 end
