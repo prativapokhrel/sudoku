@@ -1,0 +1,7 @@
+# Allow classes longer than 100 lines of code
+ClassLength:
+  Max: 250 # or whatever ends up being appropriate
+Metrics/BlockLength:
+  AllowedMethods: ['describe', 'context']
+AllCops:
+  NewCops: enable
